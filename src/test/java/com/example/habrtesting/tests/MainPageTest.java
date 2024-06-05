@@ -69,7 +69,7 @@ public class MainPageTest {
     }
     @Test
     public void becomeEnterCheckButton() {
-        assertTrue(administrationPage.becomeEnterFind(), "Кнопка Scala bundle не найдена");
+        assertTrue(administrationPage.becomeEnterFind(), "Кнопка войти не найдена");
     }
     @Test
     @DisplayName("Проверка открытие страницы Scala bundle после нажатия кнопки ")
