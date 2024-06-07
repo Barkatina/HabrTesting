@@ -38,6 +38,7 @@ public class MyFeedPage {
         return simpleLevel.isEnabled();
     }
     public String checkBecomeAnAuthorClickable() {
+        LOG.info("Переход на страницу 'Как стать автором'");
         wait.until(ExpectedConditions.visibilityOfAllElements(becomeAnAuthor));
         becomeAnAuthor.click();
         return driver.getCurrentUrl();
@@ -79,7 +80,7 @@ public class MyFeedPage {
     public MyFeedPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(8));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
 }
