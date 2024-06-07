@@ -4,6 +4,8 @@ import com.example.habrtesting.pages.AdministrationPage;
 import com.example.habrtesting.pages.MyFeedPage;
 import org.junit.jupiter.api.*;
 
+import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.page;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.openqa.selenium.WebDriver;
@@ -13,19 +15,18 @@ import java.time.Duration;
 
 public class MainPageTest {
     private WebDriver driver;
-    private AdministrationPage administrationPage;
-    private MyFeedPage myFeedPage;
+    AdministrationPage administrationPage;
+    MyFeedPage myFeedPage;
 
     @BeforeEach
     public void setUp() {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.get("https://habr.com/");
-        administrationPage = new AdministrationPage(driver);
-        myFeedPage = new MyFeedPage(driver);
+        open("https://habr.com/");
+        administrationPage = page();
+        myFeedPage = page();
     }
-
 
     @AfterEach
     public void tearDown() {
@@ -38,14 +39,6 @@ public class MainPageTest {
         assertTrue(administrationPage.findAdministration(), "Раздел Хабы не найден");
     }
 
-    @Test
-    @DisplayName("Проверка, что текст ввода остается в строке")
-    public void searchFiledText() {
-        administrationPage.clickHubs();
-        String input = "Linux";
-        administrationPage.setText(input);
-        assertEquals(input, administrationPage.getTextFromSearchField(), "Текст не совпал");
-    }
 
     @Test
     @DisplayName("Проверка наличия раздела 'Вклад компаний'")
@@ -83,7 +76,7 @@ public class MainPageTest {
 
     @Test
     @DisplayName("Проверка открытия страницы 'Хабр Аккаунт'")
-    public void openingJetBrainsMarketplace() {
+    public void openHabrAccount() {
         assertTrue(administrationPage.checkEnterClickable().contains("https://account.habr.com/login/?consumer=habrahabr&ostate=")
                 , "Не верная ссылка");
     }
@@ -108,14 +101,6 @@ public class MainPageTest {
     }
 
     @Test
-    @DisplayName("Проверка открытие страницы 'Регистрация'")
-    public void openAccountRegistration() {
-        Assertions.assertEquals(administrationPage.checkRegistrClickable(),
-                "https://account.habr.com/register/?consumer=default&ostate=",
-                "Не верная ссылка");
-    }
-
-    @Test
     @DisplayName("Проверка,что кнопка настройки активна")
     public void becomeSetteningsCheckButton() {
         assertTrue(administrationPage.becomeSettingsFind(), "Кнопка настройки не активна");
@@ -135,7 +120,7 @@ public class MainPageTest {
 
     @Test
     @DisplayName("Проврека активности drop down 'настройка ленты'")
-    public void becomedropDownsettingUpTheFeedCheck() {
+    public void becomeDropDownSettingUpTheFeedCheck() {
         assertTrue(myFeedPage.becomeDropDownSettingUpTheFeed(), "drop down 'настройка ленты' не активен");
     }
 

@@ -1,5 +1,7 @@
 package com.example.habrtesting.pages;
 
+import com.codeborne.selenide.Condition;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,143 +15,101 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.webdriver;
+import static com.codeborne.selenide.WebDriverConditions.urlContaining;
+import static com.codeborne.selenide.files.DownloadActions.click;
+
 public class AdministrationPage {
     private final Logger LOG = LoggerFactory.getLogger(AdministrationPage.class);
-    private WebDriverWait wait;
     WebDriver driver;
-    @FindBy(xpath = "//*[contains(text(),'Администрирование')]")
-    private WebElement administration;
-    @FindBy(xpath = "//*[contains(text(),'Хабы')]")
-    private WebElement hubs;
-    @FindBy(css = "h2.tm-block__title.tm-block__title")
-    private WebElement campaignContri;
 
-    @FindBy(css = "input.tm-input-text-decorated__input")
-    private WebElement searchField;
-    @FindBy(css = "svg.tm-svg-img.tm-header-user-menu__icon.tm-header-user-menu__icon_write")
-    private WebElement writeAnArticle;
-    @FindBy(css = "button.btn.btn_solid.btn_small.tm-header-user-menu__login")
-    private WebElement enter;
-    @FindBy(css = "a.form__remind-password-link ")
-    private WebElement remindPassword;
-    @FindBy(css = "a.form-additional-message__link")
-    private WebElement registr;
-    @FindBy(css = "button.tm-header-user-menu__toggle")
-    private WebElement settings;
-    @FindBy(css = "div.tm-page-settings-form__title")
-    private WebElement settingsActive;
-    @FindBy(css = "svg.tm-svg-img.icon_dropdown-arrow")
-    private WebElement dropDownEverythingInARow;
-    @FindBy(css = "button.tm-navigation-filters-tabs__option-button.tm-navigation-filters-tabs__option-button_active")
-    private WebElement theBestButton;
-
+    private static final By ADMINISTRATION_XPATH= By.xpath( "//*[contains(text(),'Администрирование')]");
+    private static final By HUBS_XPATH= By.xpath(  "//*[contains(text(),'Хабы')]");
+    private static final By CONTRIBUTION_TO_THE_COMPANY_CSS= By.cssSelector( "h2.tm-block__title.tm-block__title");
+    private static final By WRITE_AN_ARTICLE_CSS= By.cssSelector( "svg.tm-svg-img.tm-header-user-menu__icon.tm-header-user-menu__icon_write");
+    private static final By ENTER_CSS= By.cssSelector( "button.btn.btn_solid.btn_small.tm-header-user-menu__login");
+    private static final By REMIND_PASSWORD_CSS= By.cssSelector( "a.form__remind-password-link ");
+    private static final By REGISTER_CSS= By.cssSelector( "a.form-additional-message__link");
+    private static final By SETTINGS_CSS= By.cssSelector( "button.tm-header-user-menu__toggle");
+    private static final By DROP_DOWN_EVERYTHING_IN_A_ROW_CSS= By.cssSelector( "svg.tm-svg-img.icon_dropdown-arrow");
+    private static final By THE_BEST_BUTTON_CSS= By.cssSelector( "button.tm-navigation-filters-tabs__option-button.tm-navigation-filters-tabs__option-button_active");
 
     public boolean becomeEnterFind() {
         LOG.info("Проврека активности кнопки войти");
-        return enter.isEnabled();
+        return $(ENTER_CSS).isEnabled();
     }
 
     public String checkEnterClickable() {
         LOG.info("Переход на страницу 'Хабр Аккаунт'");
-        wait.until(ExpectedConditions.visibilityOfAllElements(enter));
-        enter.click();
+        $(ENTER_CSS).shouldBe(Condition.visible,Duration.ofSeconds(8))
+                .click();
         return driver.getCurrentUrl();
     }
 
     public boolean campaignContributionsFind() {
         LOG.info("Проврека наличия раздела 'Вклад компаний'");
-        administration.click();
-        hubs.click();
-        return campaignContri.isDisplayed();
+        $(ADMINISTRATION_XPATH).click();
+        $(HUBS_XPATH).click();
+        return $(CONTRIBUTION_TO_THE_COMPANY_CSS).isDisplayed();
     }
 
     public boolean findAdministration() {
         LOG.info("Проврека наличия раздела Хабы");
-        administration.click();
-        return hubs.isDisplayed();
-    }
-
-    public void clickHubs() {
-        LOG.info("Переход в раздел 'Хабы'");
-        administration.click();
-        hubs.click();
-    }
-
-    public void setText(String text) {
-        LOG.info("Проверка, что текст ввода остается в строке");
-        searchField.sendKeys(text);
-        searchField.submit();
-        System.out.println("Введен текст:" + text);
-    }
-
-    public String getTextFromSearchField() {
-        String val = searchField.getAttribute("value");
-        return val;
+        $(ADMINISTRATION_XPATH).click();
+        return $(HUBS_XPATH).isDisplayed();
     }
 
     public boolean checkWriteAnArticleClickable() {
         LOG.info("Проверка активности кнопки написать публикацию");
-        wait.until(ExpectedConditions.visibilityOfAllElements(writeAnArticle));
-        return writeAnArticle.isEnabled();
+        $(WRITE_AN_ARTICLE_CSS).shouldBe(Condition.visible,Duration.ofSeconds(8));
+        return $(WRITE_AN_ARTICLE_CSS).isEnabled();
     }
 
     public boolean becomeRemindPasswordFind() {
         LOG.info("Наличие кнопки Войти");
-        enter.click();
-        return remindPassword.isDisplayed();
+        $(ENTER_CSS).click();
+        return $(REMIND_PASSWORD_CSS).isDisplayed();
     }
 
     public String checkAccounHabrClickable() {
         LOG.info("Переход на страницу 'Восстановление пароля'");
-        wait.until(ExpectedConditions.visibilityOfAllElements(enter));
-        enter.click();
-        remindPassword.click();
+        $(ENTER_CSS).shouldBe(Condition.visible,Duration.ofSeconds(8))
+                .click();
+        $(REMIND_PASSWORD_CSS).click();
         return driver.getCurrentUrl();
     }
 
     public boolean becomeRegistrFind() {
         LOG.info("Поиск кнопки регистрация");
-        enter.click();
-        remindPassword.click();
-        return registr.isDisplayed();
-    }
-
-    public String checkRegistrClickable() {
-        LOG.info("Переход на страницу регистрации аккаунта");
-        wait.until(ExpectedConditions.visibilityOfAllElements(enter));
-        enter.click();
-        remindPassword.click();
-        wait.until(ExpectedConditions.visibilityOfAllElements(registr));
-        registr.click();
-        return driver.getCurrentUrl();
+        $(ENTER_CSS).click();
+        $(REMIND_PASSWORD_CSS).click();
+        return $(REGISTER_CSS).isDisplayed();
     }
 
     public boolean becomeSettingsFind() {
         LOG.info("Поиск кнопки настройки");
-        return settings.isDisplayed();
+        return $(SETTINGS_CSS).isDisplayed();
     }
 
     public boolean dropDownEverythingInARowActive() {
         LOG.info("Поиск drop down 'все подряд'");
-        administration.click();
-        return dropDownEverythingInARow.isDisplayed();
+        $(ADMINISTRATION_XPATH).click();
+        return $(DROP_DOWN_EVERYTHING_IN_A_ROW_CSS).isDisplayed();
     }
 
     public boolean theBestButtonActive() {
         LOG.info("Поиск кнопки 'лучшее'");
-        wait.until(ExpectedConditions.visibilityOfAllElements(dropDownEverythingInARow));
-        administration.click();
-        wait.until(ExpectedConditions.visibilityOfAllElements(dropDownEverythingInARow));
-        dropDownEverythingInARow.click();
-        return theBestButton.isDisplayed();
-
+        //wait.until(ExpectedConditions.visibilityOfAllElements(dropDownEverythingInARow));
+        $(ADMINISTRATION_XPATH).click();
+        $(DROP_DOWN_EVERYTHING_IN_A_ROW_CSS).shouldBe(Condition.visible,Duration.ofSeconds(8))
+                .click();
+        return $(THE_BEST_BUTTON_CSS).isDisplayed();
     }
 
     public AdministrationPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(8));
     }
-
-
 }
