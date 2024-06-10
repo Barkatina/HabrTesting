@@ -1,5 +1,7 @@
 package com.example.habrtesting.pages;
 
+import com.codeborne.selenide.Condition;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,76 +13,69 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 
+import static com.codeborne.selenide.Selenide.$;
+
 public class MyFeedPage {
     private final Logger LOG = LoggerFactory.getLogger(MyFeedPage.class);
     WebDriver driver;
-    private WebDriverWait wait;
-    @FindBy(css = "svg.tm-svg-img.icon_dropdown-arrow")
-    private WebElement dropDownSettingUpTheFeed;
-    @FindBy(css = "legend.my-feed-filter__section-legend")
-    private WebElement difficultyLevel;
-    @FindBy(css = "span.radio-like-button__button")
-    private WebElement simpleLevel;
-    @FindBy(css = "span.radio-like-button__button")
-    private WebElement averageLevel;
-    @FindBy(css = "span.radio-like-button__button")
-    private WebElement difficultLevel;
-    @FindBy(css = "span.tm-base-checkbox__figure")
-    private WebElement checkboxArticles;
-    @FindBy(xpath = "//*[contains(text(),'зарегистрируйтесь')]")
-    private WebElement dropDownRegister;
-    @FindBy(css = "a.tm-header__become-author-btn")
-    private WebElement becomeAnAuthor;
+    private static final By DROP_DOWN_SETTING_UP_THE_FEED_CSS= By.cssSelector( "svg.tm-svg-img.icon_dropdown-arrow");
+    private static final By DIFFICULTY_LEVEL_CSS= By.xpath( "//*[contains(text(),'Сложный')]");
+    private static final By SIMPLE_LEVEL_CSS= By.xpath( "//*[contains(text(),'Простой')]");
+    private static final By AVERAGE_LEVEL_CSS= By.xpath( "//*[contains(text(),'Средний')]");
+    private static final By CHECKBOX_ARTICLES_CSS= By.xpath( "//*[contains(text(),'зарегистрируйтесь')]");
+    private static final By DROP_DOWN_REGISTER_CSS= By.cssSelector( "span.tm-base-checkbox__figure");
+    private static final By BECOME_AN_AUTHOR_CSS= By.cssSelector( "a.tm-header__become-author-btn");
+
+
 
     public boolean becomeSimpleLevel() {
         LOG.info("Проврека активности в drop down кнопки простой уровень");
-        dropDownSettingUpTheFeed.click();
-        return simpleLevel.isEnabled();
+        $(DROP_DOWN_SETTING_UP_THE_FEED_CSS).click();
+        return $(SIMPLE_LEVEL_CSS).isEnabled();
     }
     public String checkBecomeAnAuthorClickable() {
         LOG.info("Переход на страницу 'Как стать автором'");
-        wait.until(ExpectedConditions.visibilityOfAllElements(becomeAnAuthor));
-        becomeAnAuthor.click();
+        $(BECOME_AN_AUTHOR_CSS).shouldBe(Condition.visible,Duration.ofSeconds(10))
+                .click();
         return driver.getCurrentUrl();
     }
 
     public boolean becomeDifficultyLevel() {
         LOG.info("Проврека активности в drop down кнопки средний уровень");
-        dropDownSettingUpTheFeed.click();
-        return difficultyLevel.isEnabled();
+        $(DROP_DOWN_SETTING_UP_THE_FEED_CSS).click();
+        return $(DIFFICULTY_LEVEL_CSS).isEnabled();
     }
     public boolean becomeAverageLevel() {
         LOG.info("Проврека активности в drop down кнопки сложный уровень");
-        dropDownSettingUpTheFeed.click();
-        return averageLevel.isEnabled();
+        $(DROP_DOWN_SETTING_UP_THE_FEED_CSS).click();
+        return $(AVERAGE_LEVEL_CSS).isEnabled();
     }
 
     public boolean becomeDropDownSettingUpTheFeed() {
         LOG.info("Проврека активности drop down настройка ленты");
-        return dropDownSettingUpTheFeed.isEnabled();
+        return $(DROP_DOWN_SETTING_UP_THE_FEED_CSS).isEnabled();
     }
 
     public boolean becomeCheckboxArticles() {
         LOG.info("Проврека активности checkbox статьи");
-        dropDownSettingUpTheFeed.click();
-        return checkboxArticles.isEnabled();
+        $(DROP_DOWN_SETTING_UP_THE_FEED_CSS).click();
+        return $(CHECKBOX_ARTICLES_CSS).isEnabled();
     }
 
     public String checkRegisterClickable() {
         LOG.info("Проврека открытия регистрации");
-        dropDownSettingUpTheFeed.click();
-        dropDownRegister.click();
+        $(DROP_DOWN_SETTING_UP_THE_FEED_CSS).click();
+        $(DROP_DOWN_REGISTER_CSS).click();
         return driver.getCurrentUrl();
     }
     public boolean becomeAnAuthorFind() {
         LOG.info("Проврека активности");
-        return becomeAnAuthor.isEnabled();
+        return $(BECOME_AN_AUTHOR_CSS).isEnabled();
     }
 
     public MyFeedPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
 }
