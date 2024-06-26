@@ -23,7 +23,6 @@ import static com.codeborne.selenide.files.DownloadActions.click;
 
 public class AdministrationPage {
     private final Logger LOG = LoggerFactory.getLogger(AdministrationPage.class);
-    WebDriver driver;
 
     private static final By ADMINISTRATION_XPATH= By.xpath( "//*[contains(text(),'Администрирование')]");
     private static final By HUBS_XPATH= By.xpath(  "//*[contains(text(),'Хабы')]");
@@ -45,7 +44,7 @@ public class AdministrationPage {
         LOG.info("Переход на страницу 'Хабр Аккаунт'");
         $(ENTER_CSS).shouldBe(Condition.visible,Duration.ofSeconds(8))
                 .click();
-        return driver.getCurrentUrl();
+        return webdriver().driver().getCurrentFrameUrl();
     }
 
     public boolean campaignContributionsFind() {
@@ -78,7 +77,7 @@ public class AdministrationPage {
         $(ENTER_CSS).shouldBe(Condition.visible,Duration.ofSeconds(8))
                 .click();
         $(REMIND_PASSWORD_CSS).click();
-        return driver.getCurrentUrl();
+        return webdriver().driver().getCurrentFrameUrl();
     }
 
     public boolean becomeRegistrFind() {
@@ -100,16 +99,13 @@ public class AdministrationPage {
     }
 
     public boolean theBestButtonActive() {
-        LOG.info("Поиск кнопки 'лучшее'");
-        //wait.until(ExpectedConditions.visibilityOfAllElements(dropDownEverythingInARow));
-        $(ADMINISTRATION_XPATH).click();
-        $(DROP_DOWN_EVERYTHING_IN_A_ROW_CSS).shouldBe(Condition.visible,Duration.ofSeconds(8))
+        LOG.info("Поиск кнопки 'лучшие'");
+        $(ADMINISTRATION_XPATH).shouldBe(Condition.visible,Duration.ofSeconds(8))
+                .click();
+        $(DROP_DOWN_EVERYTHING_IN_A_ROW_CSS).shouldBe(Condition.visible,Duration.ofSeconds(15))
                 .click();
         return $(THE_BEST_BUTTON_CSS).isDisplayed();
     }
 
-    public AdministrationPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
-    }
+
 }

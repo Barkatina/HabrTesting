@@ -14,16 +14,17 @@ import org.slf4j.LoggerFactory;
 import java.time.Duration;
 
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.webdriver;
+import static com.codeborne.selenide.WebDriverConditions.urlContaining;
 
 public class MyFeedPage {
     private final Logger LOG = LoggerFactory.getLogger(MyFeedPage.class);
-    WebDriver driver;
+
     private static final By DROP_DOWN_SETTING_UP_THE_FEED_CSS= By.cssSelector( "svg.tm-svg-img.icon_dropdown-arrow");
     private static final By DIFFICULTY_LEVEL_CSS= By.xpath( "//*[contains(text(),'Сложный')]");
     private static final By SIMPLE_LEVEL_CSS= By.xpath( "//*[contains(text(),'Простой')]");
     private static final By AVERAGE_LEVEL_CSS= By.xpath( "//*[contains(text(),'Средний')]");
     private static final By CHECKBOX_ARTICLES_CSS= By.xpath( "//*[contains(text(),'зарегистрируйтесь')]");
-    private static final By DROP_DOWN_REGISTER_CSS= By.cssSelector( "span.tm-base-checkbox__figure");
     private static final By BECOME_AN_AUTHOR_CSS= By.cssSelector( "a.tm-header__become-author-btn");
 
 
@@ -35,9 +36,9 @@ public class MyFeedPage {
     }
     public String checkBecomeAnAuthorClickable() {
         LOG.info("Переход на страницу 'Как стать автором'");
-        $(BECOME_AN_AUTHOR_CSS).shouldBe(Condition.visible,Duration.ofSeconds(10))
+        $(BECOME_AN_AUTHOR_CSS).shouldBe(Condition.visible,Duration.ofSeconds(15))
                 .click();
-        return driver.getCurrentUrl();
+        return webdriver().driver().getCurrentFrameUrl();
     }
 
     public boolean becomeDifficultyLevel() {
@@ -65,17 +66,14 @@ public class MyFeedPage {
     public String checkRegisterClickable() {
         LOG.info("Проврека открытия регистрации");
         $(DROP_DOWN_SETTING_UP_THE_FEED_CSS).click();
-        $(DROP_DOWN_REGISTER_CSS).click();
-        return driver.getCurrentUrl();
+        $(CHECKBOX_ARTICLES_CSS).shouldBe(Condition.visible,Duration.ofSeconds(10))
+                .click();
+        return webdriver().driver().getCurrentFrameUrl();
     }
     public boolean becomeAnAuthorFind() {
         LOG.info("Проврека активности");
         return $(BECOME_AN_AUTHOR_CSS).isEnabled();
     }
 
-    public MyFeedPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
-    }
 
 }

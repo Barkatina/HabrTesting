@@ -1,28 +1,27 @@
 package com.example.habrtesting.tests;
 
+import com.codeborne.selenide.Configuration;
 import com.example.habrtesting.pages.AdministrationPage;
 import com.example.habrtesting.pages.MyFeedPage;
 import org.junit.jupiter.api.*;
 
-import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.page;
+import static com.codeborne.selenide.Selenide.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.time.Duration;
 
 public class MainPageTest {
-    private WebDriver driver;
     AdministrationPage administrationPage;
     MyFeedPage myFeedPage;
 
     @BeforeEach
     public void setUp() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        Configuration.browserCapabilities = new ChromeOptions().addArguments("--remote-allow-origins=*");
         open("https://habr.com/");
         administrationPage = page();
         myFeedPage = page();
@@ -30,7 +29,7 @@ public class MainPageTest {
 
     @AfterEach
     public void tearDown() {
-        driver.quit();
+        closeWebDriver();
     }
 
     @Test
@@ -113,7 +112,7 @@ public class MainPageTest {
     }
 
     @Test
-    @DisplayName("Проверка,что есть кнопка 'Лучшее'")
+    @DisplayName("Проверка,что есть кнопка 'Лучшие'")
     public void becomeTheBestCheck() {
         assertTrue(administrationPage.theBestButtonActive(), "Нет кнопки лучшее");
     }
