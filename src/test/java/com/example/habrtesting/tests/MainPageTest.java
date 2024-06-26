@@ -4,16 +4,10 @@ import com.codeborne.selenide.Configuration;
 import com.example.habrtesting.pages.AdministrationPage;
 import com.example.habrtesting.pages.MyFeedPage;
 import org.junit.jupiter.api.*;
-
-import static com.codeborne.selenide.Selenide.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import java.time.Duration;
+import static com.codeborne.selenide.Selenide.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MainPageTest {
     AdministrationPage administrationPage;
@@ -42,8 +36,7 @@ public class MainPageTest {
     @Test
     @DisplayName("Проверка наличия раздела 'Вклад компаний'")
     public void becomeCampaignContributionsFind() {
-        assertTrue(administrationPage.campaignContributionsFind(),
-                "Раздел вклад компаний не найден");
+        assertTrue(administrationPage.campaignContributionsFind(), "Раздел вклад компаний не найден");
     }
 
     @Test
@@ -55,16 +48,13 @@ public class MainPageTest {
     @Test
     @DisplayName("Проверка открытие страницы 'Как стать автором' после нажатия кнопки ")
     public void openBecomeAnAuthor() {
-        Assertions.assertEquals(myFeedPage.checkBecomeAnAuthorClickable(),
-                "https://habr.com/ru/sandbox/start/",
-                "Не верная ссылка");
+        Assertions.assertEquals(myFeedPage.checkBecomeAnAuthorClickable(), "https://habr.com/ru/sandbox/start/", "Не верная ссылка");
     }
 
     @Test
     @DisplayName("Проверка, что кнопка написать публикацию активна")
     public void buttonCheckWriteAnArticle() {
-        assertTrue(administrationPage.checkWriteAnArticleClickable(),
-                "Кнопка написать публикацию не активна");
+        assertTrue(administrationPage.checkWriteAnArticleClickable(), "Кнопка написать публикацию не активна");
     }
 
     @Test
@@ -76,8 +66,7 @@ public class MainPageTest {
     @Test
     @DisplayName("Проверка открытия страницы 'Хабр Аккаунт'")
     public void openHabrAccount() {
-        assertTrue(administrationPage.checkEnterClickable().contains("https://account.habr.com/login/?consumer=habrahabr&ostate=")
-                , "Не верная ссылка");
+        assertTrue(administrationPage.checkEnterClickable().contains("https://account.habr.com/login/?consumer=habrahabr&ostate="), "Не верная ссылка");
     }
 
     @Test
@@ -89,8 +78,7 @@ public class MainPageTest {
     @Test
     @DisplayName("Проверка открытие страницы Восстановление пароля после нажатия кнопки")
     public void openingAccountHabr() {
-        assertTrue(administrationPage.checkAccounHabrClickable().contains("https://account.habr.com/login/reminder/?consumer=default&ostate="),
-                "Не верная ссылка");
+        assertTrue(administrationPage.checkAccounHabrClickable().contains("https://account.habr.com/login/reminder/?consumer=default&ostate="), "Не верная ссылка");
     }
 
     @Test
@@ -114,7 +102,11 @@ public class MainPageTest {
     @Test
     @DisplayName("Проверка,что есть кнопка 'Лучшие'")
     public void becomeTheBestCheck() {
-        assertTrue(administrationPage.theBestButtonActive(), "Нет кнопки лучшее");
+        assertTrue(administrationPage.theBestButtonActive(), "Нет кнопки лучшие");
+    }
+
+    public MainPageTest() {
+        super();
     }
 
     @Test
@@ -156,8 +148,7 @@ public class MainPageTest {
     @Test
     @DisplayName("Проверка открытие страницы 'Регистрация' после нажатия кнопки-ссылки")
     public void openBecomeRegister() {
-        assertTrue(myFeedPage.checkRegisterClickable().contains("https://account.habr.com/register/?state="),
-                "Не верная ссылка");
+        assertTrue(myFeedPage.checkRegisterClickable().contains("https://account.habr.com/register/?state="), "Не верная ссылка");
     }
 }
 
