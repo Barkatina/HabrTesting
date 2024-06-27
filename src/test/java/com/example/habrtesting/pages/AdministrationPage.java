@@ -91,7 +91,7 @@ public class AdministrationPage {
         LOG.info("Поиск кнопки 'лучшие'");
         $(ADMINISTRATION_XPATH).shouldBe(Condition.visible, Duration.ofSeconds(15))
                 .click();
-        $(DROP_DOWN_EVERYTHING_IN_A_ROW_CSS).shouldBe(Condition.visible, Duration.ofSeconds(20))
+        $(DROP_DOWN_EVERYTHING_IN_A_ROW_CSS).shouldBe(Condition.visible, Duration.ofSeconds(15))
                 .click();
         $(THE_BEST_BUTTON_CSS).shouldBe(Condition.visible, Duration.ofSeconds(15));
         return $(THE_BEST_BUTTON_CSS).isDisplayed();
