@@ -20,7 +20,6 @@ public class MyFeedPage {
     private static final By CHECKBOX_ARTICLES_CSS = By.xpath("//*[contains(text(),'зарегистрируйтесь')]");
     private static final By BECOME_AN_AUTHOR_CSS = By.cssSelector("a.tm-header__become-author-btn");
 
-
     public boolean becomeSimpleLevel() {
         LOG.info("Проврека активности в drop down кнопки простой уровень");
         $(DROP_DOWN_SETTING_UP_THE_FEED_CSS).click();
@@ -43,6 +42,7 @@ public class MyFeedPage {
     public boolean becomeAverageLevel() {
         LOG.info("Проврека активности в drop down кнопки сложный уровень");
         $(DROP_DOWN_SETTING_UP_THE_FEED_CSS).click();
+        $(AVERAGE_LEVEL_CSS).shouldBe(Condition.visible, Duration.ofSeconds(10));
         return $(AVERAGE_LEVEL_CSS).isEnabled();
     }
 

@@ -84,6 +84,7 @@ public class AdministrationPage {
     public boolean dropDownEverythingInARowActive() {
         LOG.info("Поиск drop down 'все подряд'");
         $(ADMINISTRATION_XPATH).click();
+        $(DROP_DOWN_EVERYTHING_IN_A_ROW_CSS).shouldBe(Condition.visible, Duration.ofSeconds(15));
         return $(DROP_DOWN_EVERYTHING_IN_A_ROW_CSS).isDisplayed();
     }
 
